@@ -1,1 +1,1 @@
-# Documentation about various network stacks
+# Documentation for setting various network stacks
