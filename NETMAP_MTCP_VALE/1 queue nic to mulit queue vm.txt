@@ -1,0 +1,98 @@
+sshfs turing_05@10.129.2.252:/home/turing_05/netmap_mar3_2019/mtcp /home/diptyaroop/TURING_SSH/
+
+
+## sudo reboot
+
+route -n
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+route -n
+
+
+# cd netmap_try3/netmap/LINUX ;sudo make clean ; sudo make
+
+
+### put appropriate cores on or off
+
+### load netmap 
+
+
+cd netmap/LINUX/build-apps/vale-ctl/
+
+
+sudo ./vale-ctl -n vi1 -C 2048,2048,4,4
+# queues and size can be configured
+
+sudo ./vale-ctl -a vale1:vi1
+sudo ifconfig vi1 hw ether 00:aa:bb:cc:dd:08
+sudo ./vale-ctl -h vale1:ens259f1 -C 2048,2048,1,1
+sudo  ip link set ens259f1 promisc on
+ifconfig
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0 
+
+##make sure route is correct
+route -n
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+
+
+
+## start vm
+sudo virt-manager 
+
+## for pining the vm to the particular cores  ( arg = cores )
+
+virsh list --all --uuid
+virsh vcpupin e3cd4615-aa3c-44dd-9d51-60b9c9ae45ab 0 7
+sudo virt-manager
+virsh vcpupin e3cd4615-aa3c-44dd-9d51-60b9c9ae45ab 0 3
+
+
+
+
+
+==============================================================
+Inside the VM
+cd ~/netmap_mar3_2019/netmap/LINUX/
+sudo rmmod netmap
+sudo insmod netmap.ko ptnet_vnet_hdr=0
+
+## configure mtcp with cores
+
+cd ../../mtcp
+sudo ./configure --enable-netmap CFLAGS="-DMAX_CPUS=8"
+ make clean ; make
+
+=======================delete===========================
+
+delete a port on vale
+
+./vale-ctl
+
+To remove these interface first shutdown the VM then
+
+sudo ./vale-ctl -d vale1:ens259f1
+sudo ./vale-ctl -d vale1:vi1
+sudo ./vale-ctl -r vi1
+
+=================to check=========
+sudo ./vale-ctl 
+
+
+===============temp=================
+
+sudo ./vale-ctl -n vi1 -C 2048,2048,4,4
+sudo ./vale-ctl -a vale1:vi1
+sudo ifconfig vi1 hw ether 00:aa:bb:cc:dd:08
+sudo ./vale-ctl -h vale1:ens259f1
+sudo  ip link set ens259f1 promisc on
+ifconfig
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0 
+
+##make sure route is correct
+route -n
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+
+
+================= configure netmap =============
+sudo ./configure --no-drivers=mlx5 --enable-ptnetmap --enable-pipe --enable-monitor --enable-vale --drivers=i40e
+

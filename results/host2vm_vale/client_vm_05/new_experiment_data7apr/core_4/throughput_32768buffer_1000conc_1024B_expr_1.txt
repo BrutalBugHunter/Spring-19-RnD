@@ -1,0 +1,21 @@
+./epwget 169.254.9.83/1024B.txt 10000 -c 1000 -f epwget.conf -N 4 -t 
+
+CONNECTING, Thread 3 handles 87654321 flows. connecting to 169.254.9.83:80
+[mod CPU 0] Completed 11563867 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 9679316 connections, errors: 0 incompletes: 0
+Context destroyed
+TIMER THREAD FINISHED
+[mod CPU 1] Completed 10784841 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 3] Completed 8074118 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 42873 MB, Time Elapsed = 119 secs
+Average Throughput = 2.997046 Gbps
+Average Response Time = 1630.291667 us
+Max Response Time = 504300.000000 us
+ Average PPS : 1613602.966667 (pps)
+

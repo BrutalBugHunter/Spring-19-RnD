@@ -1,0 +1,87 @@
+	## sudo reboot
+
+route -n
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+route -n
+
+
+# cd netmap_mar3/netmap/LINUX ;sudo make clean ; sudo make
+
+
+### put appropriate cores on or off
+
+### load netmap 
+
+
+cd netmap/LINUX/build-apps/vale-ctl/
+
+
+sudo ./vale-ctl -n vi1 -C 2048,2048,4,4
+sudo ./vale-ctl -a vale1:vi1
+sudo ifconfig vi1 hw ether 00:aa:bb:cc:dd:08
+sudo ./vale-ctl -h vale1:ens259f1
+sudo  ip link set ens259f1 promisc on
+ifconfig
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0 
+
+##make sure route is correct
+route -n
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+
+
+
+## start vm
+sudo virt-manager 
+
+## for pining the vm to the particular cores  ( arg = cores )
+
+virsh list --all --uuid
+virsh vcpupin e3cd4615-aa3c-44dd-9d51-60b9c9ae45ab 0 3
+sudo virt-manager
+virsh vcpupin e3cd4615-aa3c-44dd-9d51-60b9c9ae45ab 0 3
+
+
+
+
+
+======================inside vm========================================
+Inside the VM
+
+sudo rmmod netmap
+sudo insmod netmao.ko ptnet_vnet_hdr=0
+
+## configure mtcp with cores
+
+
+=======================delete===========================
+
+delete a port on vale
+
+./vale-ctl
+
+To remove these interface first shutdown the VM then
+./vale-ctl -d vale0:vi1
+./vale-ctl -r vi1
+
+=================to check=========
+sudo ./vale-ctl 
+
+
+===============temp=================
+
+sudo ./vale-ctl -n vi1 -C 2048,2048,4,4
+sudo ./vale-ctl -a vale0:vi1
+sudo ifconfig vi1 hw ether 00:aa:bb:cc:dd:08
+sudo ./vale-ctl -h vale0:ens259f1
+sudo  ip link set ens259f1 promisc on
+ifconfig
+sudo ifconfig ens259f1 169.254.9.84 netmask 255.255.0.0 
+
+##make sure route is correct
+route -n
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+
+
+================= configure netmap =============
+sudo ./configure --no-drivers=mlx5 --enable-ptnetmap --enable-pipe --enable-monitor --enable-vale --drivers=i40e

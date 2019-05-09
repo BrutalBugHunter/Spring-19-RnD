@@ -1,0 +1,106 @@
+﻿Online installation guides
+
+
+https://github.com/mtcp-stack/mtcp/blob/master/README.md
+
+
+
+
+1 System Info
+
+
+A. Linux turing-04 4.15.0-29-generic #31~16.04.1-Ubuntu SMP Wed Jul 18 08:54:04 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+
+
+B. Hyperthreading is turned off so 24 cores only
+
+
+C. NUMA installation
+
+
+
+
+
+
+2 Installation
+
+
+1. sudo apt-get install libnuma-dev 
+2. sudo apt-get install libpcap-dev
+3. sudo apt install libgmp-dev
+4. Sudo apt install libelf-dev
+5. Sudo apt install build-essentials
+6. Sudo apt install autoconf
+7. (Optional) apt-get install linux-headers-$(uname -r)
+
+or 
+sudo apt-get install -y libnuma-dev  libpcap-dev libgmp-dev libelf-dev
+
+
+( Downloading DPDK and installation  )
+( https://github.com/mtcp-stack/mtcp )
+
+
+Sudo apt install git
+* Mkdir mtcp_dpdk
+* Cd mtcp_dpdk
+* Git clone https://github.com/mtcp-stack/mtcp.git
+* git submodule init
+* git submodule update
+* ./setup_mtcp_dpdk_env.sh
+   * Press [14] to compile x86_64-native-linuxapp-gcc version
+   * Press [17] to install the driver
+   * Press [21] to setup 2048 2MB hugepages
+   * Press [23] to register the Ethernet ports
+   * Press [34] to quit the tool
+set RTE_SDK and RTE_TARGET environment variables.
+* sudo ifconfig dpdk0 x.x.x.x netmask 255.255.255.0 up
+* export RTE_SDK=`echo $PWD`/dpdk   
+* export RTE_TARGET=x86_64-native-linuxapp-gcc
+Setup mtcp library
+* ./configure --with-dpdk-lib=$RTE_SDK/$RTE_TARGET CFLAGS="-DMAX_CPUS=24"
+* make
+
+
+
+
+To revert back changes ..
+* ./setup_linux_env.sh
+   * Press [29] to unbind the Ethernet ports
+   * Press [30] to remove igb_uio.ko driver
+   * Press [33] to remove hugepage mappings
+   * Press [34] to quit the tool
+
+
+
+
+To check :
+* Cd  /apps/examples
+* Run epserver and epwget 
+* ./epserver -p /home/notav/www -f epserver.conf -N 8
+* ./epwget 192.168.100.17/example.txt 10000000 -N 8 -c 8000 -f epwget.conf
+
+
+
+
+
+
+#### to find whether NUMA or NON NUMA ######
+* dmesg | grep -i numa
+* If non numa -> No NUMA configuration found
+* If numa -> NUMA: Initialized distance table, cnt=8
+
+
+
+
+OR
+* Sudo apt install numactl
+* Numactl --hardware
+
+
+## if mtcp installed in a particular kernel version then it should be booted for mtcp working
+## Grub configuration should be made such that it should defaultly load that kernel
+* Sudo vim /etc/default/grub
+* GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux 4.15.0-29-generic"
+* Sudo update-grub
+* Sudo reboot

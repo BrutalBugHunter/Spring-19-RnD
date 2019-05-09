@@ -1,0 +1,46 @@
+### MTCP OVER DPDK, HOST TO HOST (SERVER : TURING_05, CLIENT : TURING_04) ###
+
+mkdir dpdk-19
+gedit /etc/default/grub 
+	# modify GRUB_CMDLINE_LINUX line as follows :
+GRUB_CMDLINE_LINUX="intel_iommu=on, iommu=pt"
+cat /etc/default/grub 
+sudo update-grub
+sudo reboot
+cd dpdk-19/
+	# clone mTCP from git inside netmap_mar3_2019 folder (commit used : fde981ebcbfb3d0071b04a92eb75f67888075c57)
+git clone https://github.com/mtcp-stack/mtcp.git
+cd mtcp/
+git branch
+git checkout master # if devel branch was check out
+git branch
+sudo make clean
+ls
+	# run setup script
+sudo ./setup_mtcp_dpdk_env.sh 
+	# steps : 14, 17, 21, 23, 34
+	# step 21 : assign 2048 hugapages to both NUMA cores
+	# step 23 : bind corresponding interface to dpdk
+ifconfig # check if dpdk0 interface is up
+sudo ifconfig dpdk0 169.254.9.84 netmask 255.255.0.0 up # ip can change
+ifconfig
+export RTE_SDK=`echo $PWD`/dpdk
+export RTE_TARGET=x86_64-native-linuxapp-gcc
+	# script to turn of required no. of cores (modify accordingly)
+sudo su
+./core_turn_off.sh
+^d # Ctrl-d to exit root mode
+	# change DMAX_CPUS accordingly (working for any no. of CPUs)
+./configure --with-dpdk-lib=$RTE_SDK/$RTE_TARGET CFLAGS="-DMAX_CPUS=4"
+make
+cd mtcp/apps/example
+	# modify epserver.conf file if required. Modifications should be obvious if file checked carefully
+gedit epserver.conf 
+	# just to be safe, cleaning & making again, as otherwise may not work when no. of cores are changed
+make clean
+make 
+	# run mTCP server
+sudo ./epserver -p /home/turing_05/www -f epserver.conf -N 4
+	# start client from other side, check throughput
+# VOILA!
+

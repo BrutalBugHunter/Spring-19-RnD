@@ -1,0 +1,33 @@
+Basic OVS bridge setup:
+
+source: http://docs.openvswitch.org/en/latest/howto/dpdk/
+
+set br0 IP in /etc/network/interfaces file:
+
+	auto br0
+	iface br0 inet static
+	address 192.168.100.3
+	netmask 255.255.255.0
+
+	auto enp1s0f1
+	iface enp1s0f1 inet static
+	address 0.0.0.0
+
+ovs-vsctl add-br br0
+ovs-vsctl add-port br0 tap1 -- set interface tap1 type=internal
+ovs-vsctl add-port br0 enp1s0f1
+ifconfig tap1 192.168.100.14 netmask 255.255.255.0 up
+
+#if ifconfig doesnot show br0 then 
+sudo /etc/init.d/networking restart
+
+#get ovs port number for interfaces
+ovs-vsctl get Interface enp1s0f1 ofport
+ovs-vsctl get Interface tap1 ofport
+
+#add rules
+ovs-ofctl add-flow br0 in_port=1,actions=output:2
+ovs-ofctl add-flow br0 in_port=2,actions=output:1
+
+#Check working
+ping -I tap1 192.168.100.2 (IP of other end on ither server)

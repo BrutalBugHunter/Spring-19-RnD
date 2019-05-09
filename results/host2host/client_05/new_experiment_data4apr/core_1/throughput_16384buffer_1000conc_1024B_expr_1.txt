@@ -1,0 +1,14 @@
+./epwget 169.254.9.83/1024B.txt 10000 -c 1000 -f epwget.conf -N 1 -t 120
+
+[mod CPU 0] Completed 24113163 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 25766 MB, Time Elapsed = 120 secs
+Average Throughput = 1.801176 Gbps
+Average Response Time = 3261.991667 us
+Max Response Time = 2003219.000000 us
+ Average PPS : 966427.958333 (pps)
+========================================
+

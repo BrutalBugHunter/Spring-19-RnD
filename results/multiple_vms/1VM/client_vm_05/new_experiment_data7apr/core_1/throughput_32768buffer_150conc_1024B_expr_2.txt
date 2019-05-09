@@ -1,0 +1,21 @@
+./epwget 169.254.9.83/1024B.txt 10000 -c 150 -f epwget.conf -N 1 -t 120
+
+
+[netmap_init_handle:  79] Opening netmap:ens8 with j: 0 (cpu: 0)
+CPU 0: initialization finished.
+[mtcp_create_context:1296] CPU 0 is now the master thread.
+CONNECTING, Thread 0 handles 87654321 flows. connecting to 169.254.9.83:80
+Response size set to 1166
+TIMER THREAD FINISHED
+[mod CPU 0] Completed 15515290 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 16579 MB, Time Elapsed = 120 secs
+Average Throughput = 1.158970 Gbps
+Average Response Time = 647.725000 us
+Max Response Time = 15405.000000 us
+ Average PPS : 621496.558333 (pps)
+========================================
+

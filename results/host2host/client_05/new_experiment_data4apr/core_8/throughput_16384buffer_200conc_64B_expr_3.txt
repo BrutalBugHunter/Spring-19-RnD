@@ -1,0 +1,29 @@
+./epwget 169.254.9.83/m.mkv 10000 -c 200 -f epwget.conf -N 8 -t 120
+
+[mod CPU 1] Completed 6054233 connections, errors: 0 incompletes: 0
+Context destroyed
+TIMER THREAD FINISHED
+[mod CPU 4] Completed 6043999 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 5] Completed 6087424 connections, errors: 0 incompletes: 0
+[mod CPU 3] Completed 5740875 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 6077964 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 0] Completed 6071068 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+[mod CPU 6] Completed 6044555 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 7] Completed 6025671 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 9021 MB, Time Elapsed = 119 secs
+Average Throughput = 0.630652 Gbps
+Average Response Time = 293.625000 us
+Max Response Time = 7054598.000000 us
+ Average PPS : 1945910.116667 (pps)
+========================================
+

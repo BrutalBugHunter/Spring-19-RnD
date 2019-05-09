@@ -1,0 +1,40 @@
+### OVS over DPDK (using igb_uio)
+
+
+  703  modprobe uio
+  704  lsmod | grep uio
+  705  cd
+  706  cd /usr/src/dpdk-18.11/x86_64-native-linuxapp-gcc/kmod/
+  708  insmod igb_uio.ko 
+  710  lsmod | grep uio
+  713  cd /usr/src/dpdk-18.11/usertools/
+  715  ./dpdk-devbind.py --bind=igb_uio 0000:01:00.1
+  716  ./dpdk-devbind.py --status
+  733  grep HugePages_ /proc/meminfo
+  734  export PATH=$PATH:/usr/local/share/openvswitch/scripts
+  735  export DB_SOCK=/usr/local/var/run/openvswitch/db.sock
+  737  ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options --private-key=db:Open_vSwitch,SSL,private_key --certificate=db:Open_vSwitch,SSL,certificate --bootstrap-ca-cert=db:Open_vSwitch,SSL,ca_cert --pidfile --detach --log-file
+  738  ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-init=true
+  739  ovs-ctl --no-ovsdb-server --db-sock="$DB_SOCK" start
+  744  ovs-vsctl add-br br0 -- set bridge br0 datapath_type=netdev
+  745  ovs-vsctl add-port br0 dpdk-p0 -- set Interface dpdk-p0 type=dpdk options:dpdk-devargs=0000:01:00.1
+  746  ovs-vsctl show
+  747  top -H
+  748  ps -eLo pid,psr,comm | grep pmd
+
+
+
+### OVS over DPDK (using vfio_pci)
+
+  761  modprobe vfio-pci
+  772  lsmod | grep vfio
+  775  ./dpdk-devbind.py --bind=vfio-pci enp1s0f1 ## go to folder (/usr/src/dpdk-18.11/usertools/) containing the script first, then type this command
+  776  ./dpdk-devbind.py --bind=vfio-pci 0000:01:00.1
+  777  ./dpdk-devbind.py --status
+### Use steps 733 to 739 now
+  779  ovs-vsctl add-br br0 -- set bridge br0 datapath_type=netdev
+  780  ovs-vsctl add-port br0 dpdk-p0 -- set Interface dpdk-p0 type=dpdk options:dpdk-devargs=0000:01:00.1
+  781  ovs-vsctl show
+  782  top -H
+  783  ps -eLo pid,psr,comm | grep pmd
+

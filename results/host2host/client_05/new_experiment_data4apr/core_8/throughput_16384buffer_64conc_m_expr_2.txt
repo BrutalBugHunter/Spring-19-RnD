@@ -1,0 +1,9 @@
+./epwget 169.254.9.83/m.mkv 10000 -c 64 -f epwget.conf -N 8 -t 120
+
+========================================
+Total Bytes Read = 505034 MB, Time Elapsed = 119 secs
+Average Throughput = 35.304447 Gbps
+Average Response Time = 1096104.258333 us
+Max Response Time = 2121758.000000 us
+ Average PPS : 3070173.808333 (pps)
+========================================

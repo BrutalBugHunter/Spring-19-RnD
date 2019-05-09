@@ -1,0 +1,50 @@
+./epwget 169.254.9.83/64.txt 10000 -c 3200 -f epwget.conf -N 16 -t 120
+
+
+CPU 7: initialization finished.
+CPU 11: initialization finished.
+CONNECTING, Thread 11 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 7 handles 87654321 flows. connecting to 169.254.9.83:80
+[mod CPU 1] Completed 12185346 connections, errors: 0 incompletes: 0
+[mod CPU 5] Completed 11826665 connections, errors: 0 incompletes: 0
+[mod CPU 12] Completed 14273152 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 6] Completed 12101740 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 11] Completed 12212935 connections, errors: 0 incompletes: 0
+TIMER THREAD FINISHED
+[mod CPU 15] Completed 14149367 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 8] Completed 11991576 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+[mod CPU 13] Completed 14823168 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 7] Completed 12245681 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+[mod CPU 10] Completed 12009177 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 9] Completed 12005058 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 14] Completed 14442101 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 0] Completed 12086389 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+[mod CPU 3] Completed 12065630 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 12006287 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 4] Completed 12183533 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 38064 MB, Time Elapsed = 118 secs
+Average Throughput = 2.660873 Gbps
+Average Response Time = 1011.291667 us
+Max Response Time = 19220.000000 us
+ Average PPS : 8265429.375000 (pps)
+========================================
+

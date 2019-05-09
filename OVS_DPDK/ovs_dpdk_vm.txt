@@ -1,0 +1,42 @@
+OVS-DPDK interface to VM
+
+ovs-vsctl add-br br0 -- set bridge br0 datapath_type=netdev
+ovs-vsctl add-port br0 dpdk-p0 -- set Interface dpdk-p0 type=dpdk options:dpdk-devargs=0000:01:00.1
+ovs-vsctl add-port br0 dpdkvhostuser0     -- set Interface dpdkvhostuser0 type=dpdkvhostuser ofport_request=3
+ ovs-ofctl del-flows br0
+ ovs-ofctl add-flow br0 in_port=1,action=output:3
+ ovs-ofctl add-flow br0 in_port=3,action=output:1
+
+echo 'vm.nr_hugepages=2048' > /etc/sysctl.d/hugepages.conf
+sysctl -w vm.nr_hugepages=8192
+grep HugePages_ /proc/meminfo
+
+edit VM XML to add this interface
+
+first line:
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+
+add before </domain> tag:
+
+<qemu:commandline>
+    <qemu:arg value='-chardev'/>
+    <qemu:arg value='socket,id=char1,path=/usr/local/var/run/openvswitch/dpdkvhostuser0'/>
+    <qemu:arg value='-netdev'/>
+    <qemu:arg value='vhost-user,id=mynet1,chardev=char1,vhostforce=on,queues=2'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='virtio-net-pci,mac=00:00:00:00:00:01,netdev=mynet1,mq=on,vectors=6'/>
+    <qemu:arg value='-m'/>
+    <qemu:arg value='4096'/>
+    <qemu:arg value='-object'/>
+    <qemu:arg value='memory-backend-file,id=mem1,size=4096M,mem-path=/dev/hugepages,share=on'/>
+    <qemu:arg value='-mem-prealloc'/>
+    <qemu:arg value='-numa'/>
+    <qemu:arg value='node,memdev=mem1'/>
+  </qemu:commandline>
+
+
+sudo apt-get install apparmor-utils
+aa-complain /etc/apparmor.d/libvirt/libvirt-ca191e80-f357-4289-aebe-c7143d79bbd6   #libvir value is as seen in dmesg app-armour message with log value DENIED
+
+boot the vm and check 
+sudo ethtool -L interface_name # to check number of queues in the created interface

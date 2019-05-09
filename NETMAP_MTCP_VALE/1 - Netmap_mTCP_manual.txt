@@ -1,0 +1,73 @@
+#----- Netmap Installation -----#
+
+* git clone https://github.com/luigirizzo/netmap.git
+* cd netmap/
+* cd LINUX/
+* ./configure --show-drivers 
+* sudo ./configure --no-drivers=mlx5 --enable-ptnetmap --enable-pipe --enable-monitor --enable-vale 
+* sudo make
+* sudo make install 
+
+
+#----- Netmap and igb module loading ----- (while on ssh u may put following in bash script to prevent losing connection ) #
+
+#### ----- For single rx/tx queue
+sudo rmmod igb
+sudo insmod /home/turing_04/netmap-19/netmap/LINUX/netmap.ko
+sudo insmod /home/turing_04/netmap-19/netmap/LINUX/igb/igb.ko
+sudo ifconfig enp1s0f0 up
+sudo ifconfig enp1s0f1 up
+
+#### ----- For multiqueue 
+NIC=enp1s0f1
+IP=192.168.100.21
+NETMASK=255.255.255.0
+NUMBUFS=2
+sudo rmmod igb
+sudo insmod /home/turing_05/netmap-19/netmap/LINUX/netmap.ko
+sudo insmod /home/turing_05/netmap-19/netmap/LINUX/igb/igb.ko RSS=2,2
+ethtool -G $NIC rx $NUMBUFS tx $NUMBUFS
+ifconfig $NIC $IP netmask $NETMASK
+ethtool -K $NIC rx off tx off gro off tso off
+ethtool -N $NIC rx-flow-hash tcp4 sdfn
+ethtool -N $NIC rx-flow-hash udp4 sdfn
+sudo ifconfig enp1s0f0 up
+
+#### ---- For restoring original igb driver
+sudo rmmod igb
+sudo rmmod netmap
+sudo insmod /lib/modules/4.15.0-29-generic/kernel/drivers/net/ethernet/intel/igb/igb.ko 
+sudo ifconfig enp1s0f0 up
+sudo ifconfig enp1s0f1 up
+
+# ---- For initial test ---- #
+(make sure all interface have an ip assigned)
+* cd ./netmap/apps/pkt-gen/
+#( on server )
+* sudo pkt-gen -i enp1s0f1 -f tx -n 500111222 -l 60 -w 5 -s 192.168.100.21:5000 -d 192.168.100.16:5000  
+#( on client )
+* sudo pkt-gen -i enp1s0f1 -f rx -s 192.168.100.16:5000 -d 192.168.100.21:5000 
+
+#----- mTCP configuration -----#
+(After cloning mTCP from git)
+* cd mtcp/
+* ./configure --enable-netmap CFLAGS="-DMAX_CPUS=2"
+* make
+
+#### ---- mtcp test ------
+* cd ./mtcp/apps/example
+( make sure u have config folder with proper arp , route entries )
+[ Changes in epserver.conf and epwget.conf files  
+- io = netmap
+- #io = dpdk
+- #num_mem_ch = 4
+- #port = dpdk0
+- port = enp1s0f1
+- #stat_print = dpdk0
+- stat_print = enp1s0f1
+]
+#(on server)
+*  sudo ./epserver -p /home/turing_05/www -f epserver.conf -N 2
+#(on client)
+* sudo ./epwget 192.168.100.21/small.txt 10000000 -N 2 -c 8000 -f epwget.conf
+

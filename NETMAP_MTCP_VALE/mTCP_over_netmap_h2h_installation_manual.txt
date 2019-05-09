@@ -1,0 +1,59 @@
+### MTCP OVER NETMAP, HOST TO HOST (SERVER : TURING_05, CLIENT : TURING_04) ###
+
+sudo reboot
+
+	# check if ping working, if not, run the following commands
+route -n
+sudo route del -net 169.254.0.0 netmask 255.255.0.0 dev ens259f0
+ping 169.254.9.83 # ip can change
+
+mkdir netmap_mar3_2019
+cd netmap_mar3_2019
+git clone https://github.com/luigirizzo/netmap.git
+cd netmap
+	# this commit is suggested by A.Jamshed, stable & working
+git checkout 21227d47ae995812412d1de22855c7fa8260f53a 
+git log
+cd LINUX/
+	# download linux source /home/turing_05/linux-4.15 beforehand. Please check net on how to download (steps may be added later)
+./configure --no-drivers=mlx5 --enable-ptnetmap --enable-pipe --enable-monitor --enable-vale --drivers=i40e --kernel-sources=/home/turing_05/linux-4.15
+sudo make
+sudo make install
+cd i40e-2.4.6/
+cd src/
+sudo gedit i40e_main.c
+	# inside the file, change code as per https://github.com/mtcp-stack/mtcp/blob/master/README.netmap PART C (using custom RSS hash)
+cd ../..
+sudo make
+cd ..
+
+	# script to turn of required no. of cores (modify accordingly)
+sudo su
+./core_turn_off.sh
+^d # Ctrl-d to exit root mode
+	# both scripts written beforehand, check in netmap_mar3_2019 folder 
+sudo ./mod_40_restore.sh # removes netmap module, restores normal i40e driver
+sudo ./mod_changer_rx_tx.sh # inserts netmap module along with required parameters
+	# check if netmap module installed properly
+lsmod | grep netmap 
+	# check kernel log to verify if working properly & how many cores are on
+dmesg 
+
+	# clone mTCP from git inside netmap_mar3_2019 folder (commit used : 1ad1b1a386ad2e17b671c000d08eb1296a94be95)
+git clone https://github.com/mtcp-stack/mtcp.git
+cd mtcp
+sudo make clean
+	# change DMAX_CPUS accordingly (mtcp correctly distributing if no. of cores == 2^i, otherwise, not distributing correctly (why??))
+./configure --enable-netmap CFLAGS="-DMAX_CPUS=4"
+sudo make
+cd apps/example/
+	# change epserver.conf file to make it compatible with netmap
+gedit epserver.conf # changes should be obvious after seeing config file carefully
+	# just to be safe, cleaning & making again, as otherwise may not work when no. of cores are changed
+make clean
+make 
+	# start mTCP server
+sudo ./epserver -p /home/turing_05/www -f epserver.conf -N 4
+	# start client from other side, check throughput
+# VOILA!
+

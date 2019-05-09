@@ -1,0 +1,55 @@
+Do the following changes as root user:
+--- vim /etc/apparmor.d/usr.sbin.libvirtd
+	Add the following lines after "/etc/xen/scripts/** rmix,"
+
+	/usr/local/bin/qemu-system-x86_64 rmix,
+       /usr/local/bin/qemu-img rmix,
+
+---- vim /etc/libvirt/qemu.conf
+If these lines are commented uncomment these:
+
+security_driver = "none"
+user = "root"
+group = "root"
+
+Uncomment the line below and add the "/dev/netmap" to it. So, the line would look like this:
+
+cgroup_device_acl = [
+    "/dev/null", "/dev/full", "/dev/zero",
+    "/dev/random", "/dev/urandom",
+    "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
+    "/dev/rtc","/dev/hpet", "/dev/vfio/vfio","/dev/netmap"
+]
+
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+changed following lines in VM XML:
+ <type arch='x86_64' machine='pc-i440fx-xenial'>hvm</type>
+ to 
+ <type arch='x86_64' machine='pc-i440fx-2.1'>hvm</type>
+
+in cpu
+ <model fallback='allow'>Haswell-noTSX</model>
+
+######The emulator line given below might not work then skip this line ##############
+ <emulator>/usr/local/bin/qemu-system-x86_64</emulator>
+
+removed the following lines:
+
+<channel type='spicevmc'>
+      <target type='virtio' name='com.redhat.spice.0'/>
+      <address type='virtio-serial' controller='0' bus='0' port='1'/>
+    </channel>
+
+<redirdev bus='usb' type='spicevmc'>
+    </redirdev>
+    <redirdev bus='usb' type='spicevmc'>
+    </redirdev>
+
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+inside virt-manager for the VM:
+updated display to vnc server
+updated video to cirrus

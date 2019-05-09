@@ -1,0 +1,29 @@
+./epwget 169.254.9.83/1024.txt 10000 -c 704 -f epwget.conf -N 8 -t 120
+
+[mod CPU 3] Completed 18456848 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 7] Completed 18734712 connections, errors: 0 incompletes: 0
+[mod CPU 0] Completed 18866194 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 4] Completed 18450841 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 18267023 connections, errors: 0 incompletes: 0
+[mod CPU 1] Completed 18820543 connections, errors: 0 incompletes: 0
+[mod CPU 5] Completed 19059393 connections, errors: 0 incompletes: 0
+Context destroyed
+TIMER THREAD FINISHED
+Context destroyed
+Context destroyed
+Context destroyed
+[mod CPU 6] Completed 18699982 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 160160 MB, Time Elapsed = 119 secs
+Average Throughput = 11.195996 Gbps
+Average Response Time = 327.641667 us
+Max Response Time = 500296.000000 us
+ Average PPS : 6033115.708333 (pps)
+========================================
+

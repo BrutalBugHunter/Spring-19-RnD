@@ -1,0 +1,62 @@
+./epwget 169.254.9.83/64.txt 10000 -c 1024 -f epwget.conf -N 16 -t 120
+
+CPU 7: initialization finished.
+Response size set to 204
+CONNECTING, Thread 5 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 11 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 9 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 0 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 7 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 3 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 2 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 4 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 8 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 10 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 13 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 14 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 6 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 1 handles 87654321 flows. connecting to 169.254.9.83:80
+CONNECTING, Thread 15 handles 87654321 flows. connecting to 169.254.9.83:80
+[mod CPU 1] Completed 11823272 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 13] Completed 13662863 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 15] Completed 13276749 connections, errors: 0 incompletes: 0
+[mod CPU 14] Completed 13480079 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 10] Completed 11804298 connections, errors: 0 incompletes: 0
+[mod CPU 12] Completed 13485810 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 5] Completed 11902958 connections, errors: 0 incompletes: 0
+[mod CPU 0] Completed 11870384 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+TIMER THREAD FINISHED
+[mod CPU 6] Completed 11903092 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 8] Completed 11796747 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 11796381 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 11] Completed 11874000 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 3] Completed 11825228 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 9] Completed 11729714 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 4] Completed 11893579 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 7] Completed 11885047 connections, errors: 0 incompletes: 0
+Context destroyed
+Context destroyed
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 36618 MB, Time Elapsed = 115 secs
+Average Throughput = 2.559822 Gbps
+Average Response Time = 344.391667 us
+Max Response Time = 501366.000000 us
+ Average PPS : 8124198.591667 (pps)
+========================================
+

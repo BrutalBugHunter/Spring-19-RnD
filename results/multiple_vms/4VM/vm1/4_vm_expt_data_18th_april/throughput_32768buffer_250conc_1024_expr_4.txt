@@ -1,0 +1,19 @@
+generic-2 ./epwget 169.254.9.83/1024B 10000 -c 250 -f epwget.conf -N 2 -t 120
+
+[mod CPU 0] Completed 8359691 connections, errors: 0 incompletes: 0
+Context destroyed
+TIMER THREAD FINISHED
+[mod CPU 1] Completed 8916403 connections, errors: 0 incompletes: 0
+Context destroyed
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 18562 MB, Time Elapsed = 120 secs
+Average Throughput = 1.297644 Gbps
+Average Response Time = 932.141667 us
+Max Response Time = 499780.000000 us
+ Average PPS : 696734.316667 (pps)
+[RunMainLoop: 896] MTCP thread 0 finished.
+[mtcp_free_context:1340] MTCP thread 0 joined.
+========================================
+

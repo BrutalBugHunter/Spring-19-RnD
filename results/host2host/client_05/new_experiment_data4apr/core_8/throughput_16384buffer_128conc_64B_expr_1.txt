@@ -1,0 +1,32 @@
+./epwget 169.254.9.83/m.mkv 10000 -c 128 -f epwget.conf -N 8 -t 120
+
+[mod CPU 0] Completed 3922031 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 4] Completed 3919654 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 3] Completed 3921143 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 5] Completed 3921383 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 6] Completed 3926770 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 2] Completed 3916695 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 1] Completed 3886302 connections, errors: 0 incompletes: 0
+Context destroyed
+[mod CPU 7] Completed 3918027 connections, errors: 0 incompletes: 0
+Context destroyed
+[RunMainLoop: 896] MTCP thread 3 finished.
+[mtcp_free_context:1340] MTCP thread 3 joined.
+[RunMainLoop: 896] MTCP thread 0 finished.
+[mtcp_free_context:1340] MTCP thread 0 joined.
+APP THREADS FINISHED
+
+========================================
+Total Bytes Read = 5890 MB, Time Elapsed = 120 secs
+Average Throughput = 0.411799 Gbps
+Average Response Time = 264.741667 us
+Max Response Time = 500162.000000 us
+ Average PPS : 1260326.666667 (pps)
+========================================
+
